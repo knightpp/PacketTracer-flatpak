@@ -1,0 +1,75 @@
+app-id: io.cisco.packettracer
+runtime: org.kde.Platform
+runtime-version: "5.15"
+sdk: org.kde.Sdk
+command: /app/pt/bin/PacketTracer
+tags: [proprietary]
+desktop-file-name-suffix: " (Flatpak)"
+separate-locales: false
+finish-args:
+  - --socket=x11
+  - --socket=pulseaudio
+  - --share=network
+  - --filesystem=home
+  - --env=LD_LIBRARY_PATH=/app/pt/bin
+  # - --filesystem=xdg-config/kdeglobals:ro
+cleanup:
+  - opt
+  - usr
+  - control.tar.xz
+  - data.tar.xz
+  - debian-binary
+  - /app/pt/art
+modules:
+  - name: UnpackDeb
+    buildsystem: simple
+    build-commands:
+      - ./unpack_deb
+      - ./fix_perms
+      - cp -r usr/* /app
+      - cp -r opt/pt /app
+    sources:
+      - type: script
+        dest-filename: fix_perms
+        commands:
+          - find opt/pt/saves/ -type d -exec chmod 755 {} \;
+          - find opt/pt/saves/ -type f -exec chmod 644 {} \;
+      - type: script
+        dest-filename: unpack_deb
+        commands:
+          - ar x CiscoPacketTracer_801_Ubuntu_64bit.deb
+          - tar xf data.tar.xz
+      - type: file
+        path: CiscoPacketTracer_801_Ubuntu_64bit.deb
+        only-arches: [x86_64]
+        sha256: 77a25351b016faed7c78959819c16c7013caa89c6b1872cb888cd96edd259140
+        x-checker-data:
+          type: debian-repo
+          package-name: PacketTracer
+          dist: stable
+          component: main
+
+  - name: PacketTracer
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 /app/share/mime/packages/cisco-pka.xml
+        /app/share/mime/packages/io.cisco.packettracer.cisco-pka.xml
+      - install -Dm644 /app/share/mime/packages/cisco-pkt.xml
+        /app/share/mime/packages/io.cisco.packettracer.cisco-pkt.xml
+      - install -Dm644 /app/share/mime/packages/cisco-pkz.xml
+        /app/share/mime/packages/io.cisco.packettracer.cisco-pkz.xml
+      - install -Dm644 /app/pt/art/app.png -t /app/share/icons/io.cisco.packettracer.png
+      - install -Dm644 io.cisco.packettracer.desktop -t /app/share/applications/
+      - install -Dm644 io.cisco.packettracer.ptsa.desktop -t /app/share/applications/
+      - ./cleanup
+    sources:
+      - type: file
+        path: io.cisco.packettracer.desktop
+      - type: file
+        path: io.cisco.packettracer.ptsa.desktop
+      - type: script
+        dest-filename: cleanup
+        commands:
+          - rm /app/share/applications/cisco-{pt,ptsa}.desktop
+          - rm /app/share/mime/packages/cisco-pk{a,t,z}.xml
+          - rm /app/share/icons/gnome/48x48/mimetypes/pk{a,t,z}.png

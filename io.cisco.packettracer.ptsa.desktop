@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/app/pt/bin/PacketTracer -uri=%u
+Name=Packet Tracer 8.0.1
+Icon=io.cisco.packettracer
+Terminal=false
+StartupNotify=true
+NoDisplay=true
+MimeType=x-scheme-handler/pttp;
+
