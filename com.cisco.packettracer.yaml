@@ -1,4 +1,4 @@
-app-id: io.cisco.packettracer
+app-id: com.cisco.packettracer
 runtime: org.kde.Platform
 runtime-version: "5.15"
 sdk: org.kde.Sdk
@@ -54,20 +54,20 @@ modules:
     buildsystem: simple
     build-commands:
       - install -Dm644 /app/share/mime/packages/cisco-pka.xml
-        /app/share/mime/packages/io.cisco.packettracer.cisco-pka.xml
+        /app/share/mime/packages/com.cisco.packettracer.cisco-pka.xml
       - install -Dm644 /app/share/mime/packages/cisco-pkt.xml
-        /app/share/mime/packages/io.cisco.packettracer.cisco-pkt.xml
+        /app/share/mime/packages/com.cisco.packettracer.cisco-pkt.xml
       - install -Dm644 /app/share/mime/packages/cisco-pkz.xml
-        /app/share/mime/packages/io.cisco.packettracer.cisco-pkz.xml
+        /app/share/mime/packages/com.cisco.packettracer.cisco-pkz.xml
       - install -Dm644 /app/pt/art/app.png -t /app/share/icons/hicolor/apps/48x48/
-      - install -Dm644 io.cisco.packettracer.desktop -t /app/share/applications/
-      - install -Dm644 io.cisco.packettracer.ptsa.desktop -t /app/share/applications/
+      - install -Dm644 com.cisco.packettracer.desktop -t /app/share/applications/
+      - install -Dm644 com.cisco.packettracer.ptsa.desktop -t /app/share/applications/
       - ./cleanup
     sources:
       - type: file
-        path: io.cisco.packettracer.desktop
+        path: com.cisco.packettracer.desktop
       - type: file
-        path: io.cisco.packettracer.ptsa.desktop
+        path: com.cisco.packettracer.ptsa.desktop
       - type: script
         dest-filename: cleanup
         commands:
